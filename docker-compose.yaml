@@ -1,0 +1,40 @@
+services:
+  db:
+    image: postgis/postgis:14-3.3
+    restart: always
+    environment:
+      POSTGRES_DB: kartpool
+      POSTGRES_USER: kartpool
+      POSTGRES_PASSWORD: supersecret123
+    ports:
+      - "5433:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U kartpool -d kartpool"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  web:
+    build: .
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    environment:
+      - DEBUG=True
+      - SECRET_KEY=LpJtwvTcPgkZBDS4YmD-onTaiItiHtddfW8_XhWixn_RhIXHmVwE-YqeIc9SZtZTano
+      - ALLOWED_HOSTS=localhost,127.0.0.1,0.0.0.0,[::1]
+      - DATABASE_NAME=kartpool
+      - DATABASE_USER=kartpool
+      - DATABASE_PASSWORD=supersecret123
+      - DATABASE_HOST=db
+      - DATABASE_PORT=5432
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  pgdata:
