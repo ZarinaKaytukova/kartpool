@@ -28,3 +28,19 @@ class Store(models.Model):
     location = models.PointField(null=True)
     address = models.CharField(max_length=100)
     phone = models.CharField(null=True, max_length=100)
+    
+    CATEGORY_CHOICES = [
+        ('grocery', 'Продукты'),
+        ('household', 'Бытовая химия'),
+        ('pet', 'Зоотовары'),
+        ('pharmacy', 'Аптека'),
+        ('other', 'Другое'),
+    ]
+    name = models.CharField(max_length=255)
+    address = models.TextField()
+    location = models.PointField(srid=4326, geography=True)
+    category = models.CharField(max_length=20, choices=CATEGORY_CHOICES, default='other')
+    
+    def __str__(self):
+        return self.name
+
