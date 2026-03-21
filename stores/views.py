@@ -19,6 +19,7 @@ class StoreView(viewsets.ModelViewSet):
     def list(self, request):
         latitude = self.request.query_params.get('lat')
         longitude = self.request.query_params.get('lng')
+        category = self.request.query_params.get('category', None)
 
         radius = 10 # in kilometres
         number_of_stores_to_return = 100
@@ -29,6 +30,8 @@ class StoreView(viewsets.ModelViewSet):
             km=radius,
             limit=number_of_stores_to_return
         )
+        if category:
+            stores = [store for store in stores if store.category == category]
 
         stores_data = NearbyStoreSerializer(stores, many=True)
         return Response(stores_data.data)
@@ -44,6 +47,7 @@ class StorePageView(viewsets.ModelViewSet):
     def list(self, request):
         latitude = self.request.query_params.get('lat')
         longitude = self.request.query_params.get('lng')
+        category = self.request.query_params.get('category', None)
 
         radius = 10 # in kilometres
         number_of_stores_to_return = 100
@@ -54,6 +58,16 @@ class StorePageView(viewsets.ModelViewSet):
             km=radius,
             limit=number_of_stores_to_return
         )
+        
+        if category:
+            stores = [store for store in stores if store.category == category]
+            
+        categories = Store.CATEGORY_CHOICES
 
         stores_data = NearbyStoreSerializer(stores, many=True)
-        return Response({'stores': stores_data.data})
+        return Response({
+            'stores': stores_data.data,
+            'categories': categories,
+            'selected_category': category
+        })
+
