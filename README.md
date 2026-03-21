@@ -61,3 +61,16 @@ Say _hi_ 👋 on:
 
 - [Github Discussions](https://github.com/booleanhunter-tech-blog/kartpool/discussions)
 - [Blog Forum](https://forum.booleanhunter.com/t/thinking-of-building-a-contact-tracing-application-here-s-what-you-can-do-instead/38)
+
+## Features
+-   View stores on map
+-   **Filter stores by category** (groceries, household, pet, pharmacy, etc.)
+
+## Quick Local Setup
+
+1.  Clone the repo
+2.  Install dependencies: `pip install -r requirements.txt`
+3.  Set up PostgreSQL with PostGIS
+4.  Run migrations: `python manage.py migrate`
+5.  Create superuser: `python manage.py createsuperuser`
+6.  Run server: `python manage.py runserver`
