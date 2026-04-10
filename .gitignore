@@ -1,3 +1,9 @@
 *.vscode/
 *.pyc
 **/__pycache__/
+.env
+*.pyo
+*.pyd
+.DS_Store
+pgdata/
+*.sql
