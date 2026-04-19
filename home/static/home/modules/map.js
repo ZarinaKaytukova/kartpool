@@ -160,3 +160,38 @@ export function displayStoreDetails(map, point) {
         .addTo(map);
     return popup;
 }
+
+function createPopupContent(store) {
+    const template = document.getElementById('store-popup-template');
+    const content = template.content.cloneNode(true);
+    
+    content.querySelector('.store-name').textContent = store.name;
+    content.querySelector('.store-address').textContent = store.address;
+    content.querySelector('.store-category').textContent = store.category_display;
+    
+    const favoriteBtn = content.querySelector('.favorite-btn');
+    favoriteBtn.dataset.storeId = store.id;
+    
+    // Проверяем, в избранном ли магазин (опционально)
+    checkFavoriteStatus(store.id).then(isFav => {
+        if (isFav) {
+            favoriteBtn.classList.add('active', 'btn-danger');
+            favoriteBtn.querySelector('.favorite-icon').innerHTML = '❤️';
+            favoriteBtn.querySelector('.favorite-text').textContent = 'В избранном';
+        }
+    });
+    
+    return content;
+}
+
+async function checkFavoriteStatus(storeId) {
+    if (!document.body.dataset.userAuthenticated) return false;
+    
+    try {
+        const response = await fetch('/api/favorites/');
+        const favorites = await response.json();
+        return favorites.some(f => f.store_detail.id === storeId);
+    } catch {
+        return false;
+    }
+}
