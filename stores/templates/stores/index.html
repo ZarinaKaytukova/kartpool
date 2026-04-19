@@ -59,5 +59,13 @@
                 </table>
             </div>
         </div>
+    <nav>
+        <!-- ... -->
+        {% if user.is_authenticated %}
+            <a href="{% url 'favorites-page' %}" class="nav-link">
+                ❤️ Моё избранное
+            </a>
+        {% endif %}
+    </nav>
     </body>
 </html>

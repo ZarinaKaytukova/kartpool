@@ -27,6 +27,24 @@
             </p>
         </div>
     </div>
+    <div class="store-sidebar">
+        <h4>Магазины поблизости</h4>
+        <div id="store-list">
+            <!-- Карточка магазина (пример) -->
+            <div class="store-card" data-store-id="{{ store.id }}">
+                <div class="store-info">
+                    <h5>{{ store.name }}</h5>
+                    <p>{{ store.address }}</p>
+                    <span class="badge">{{ store.get_category_display }}</span>
+                </div>
+                <div class="store-actions">
+                    <button class="favorite-btn" data-store-id="{{ store.id }}">
+                        🤍
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 {% empty %}
     <p>Магазинов не найдено.</p>
 {% endfor %}
