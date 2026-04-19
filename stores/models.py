@@ -44,3 +44,13 @@ class Store(models.Model):
     def __str__(self):
         return self.name
 
+class Favorite(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='favorites')
+    store = models.ForeignKey(Store, on_delete=models.CASCADE, related_name='favorited_by')
+    created_at = models.DateTimeField(auto_now_add=True)
+    
+    class Meta:
+        unique_together = ('user', 'store')
+        indexes = [
+            models.Index(fields=['user', '-created_at']),
+        ]
